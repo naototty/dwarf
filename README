@@ -6,6 +6,34 @@ a subset of the Keystone, Glance and Nova APIs to manage images and instances
 on the local machine.
 
 
+MEMO (naototty)
+----
+nova, glanceのみなので、拡張をする
+  * conoha driver
+    * floating IP
+      * add floating IP: 512MB planのvyos routerをdeployする
+
+考慮すること、改修検討
+* https://docs.openstack.org/ja/user-guide/cli-manage-ip-addresses.html
+  * $ openstack floating ip pool list
+  * $ openstack network list --external
+  * $ openstack floating ip list
+  * $ openstack floating ip create public
+    * この時に、512MBのNAT vyos router VMを設定する(wrapper)
+  * $ openstack server list
+    * このときに、floating IP用のprivateネットワーク割当を表示する << IP割当は本来は自動
+    * NAT先のreal server IPが private=x*.*x.*x.X  として表示される
+  * $ openstack server add floating ip INSTANCE_NAME_OR_ID FLOATING_IP_ADDRESS
+  * ex) $ openstack server add floating ip VM1 172.24.4.225
+    * private IPに対して、bind
+  * $ openstack server list
+    * private IP, floating IPの関連付けを表示する
+    $ openstack server list
+
+
+
+
+
 Restrictions
 ------------
 
